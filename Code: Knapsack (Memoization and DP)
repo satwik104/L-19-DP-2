@@ -1,0 +1,70 @@
+
+// DP
+int knapsack(int* weight, int* value, int n, int maxWeight) {
+	// Write your code here
+    int **dp = new int*[n+1];
+    for(int i=0; i<=n; i++){
+        dp[i] = new int[maxWeight+1];
+    }
+    
+    for(int j=0; j<=maxWeight; j++){
+        dp[n][j] = 0;
+    }
+    
+    for(int i=n-1; i>=0; i--){
+        for(int j=0; j<=maxWeight; j++){
+            if(weight[i] > j){
+                dp[i][j] = dp[i+1][j];
+            }
+            else{
+                dp[i][j] = max(value[i] + dp[i+1][j-weight[i]], dp[i+1][j]);
+            }
+        }
+    }
+    
+    return dp[0][maxWeight];
+}
+
+// Memoization
+
+#include<climits>
+
+int **dp;
+
+int helper(int *weights, int *values, int n, int i, int maxWeight, int val){
+    
+    
+    if(maxWeight < 0){
+        return INT_MIN;
+    }
+    if(maxWeight == 0){
+        return val;
+    }
+    
+    if(dp[i][maxWeight]!=-1){
+        return dp[i][maxWeight];
+    }
+    
+    if(i==n){
+        return val;
+    }
+    
+    int x = helper(weights,values,n,i+1,maxWeight-weights[i], val + values[i]);
+    int y = helper(weights,values,n,i+1,maxWeight,val);
+    
+    return dp[i][maxWeight] = max(x,y);
+}
+
+int knapsack(int *weights, int *values, int n, int maxWeight)
+{
+	//write your code here
+    dp = new int*[n+1];
+    for(int i=0; i<=n; i++){
+        dp[i] = new int[maxWeight+1];
+        for(int j=0; j<=maxWeight; j++){
+            dp[i][j] = -1;
+        }
+    }
+    return helper(weights,values,n,0,maxWeight,0);
+    
+}
