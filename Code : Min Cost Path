@@ -1,0 +1,86 @@
+int minCostPath(int **input, int m, int n, int i, int j)
+{
+    //1st base case- the case when we are given a single cell of 1*1 matrix
+    if(i==m-1 && j==n-1)
+        return input[i][j];
+    //second case is when we are on a invalid cell
+    if(i>=m || j>=n)
+        return INT_MAX;
+    //recursive calls
+    int x = minCostPath(input,m,n,i,j+1);//right
+    int y = minCostPath(input,m,n,i+1,j+1);//diagnol
+    int z = minCostPath(input,m,n,i+1,j);//down
+    //our work
+    int ans = min(x,min(y,z)) + input[i][j];
+    return ans;
+}
+int minCostPath(int **input, int m, int n)
+{
+	return minCostPath(input,m,n,0,0);
+}
+
+                        /****************************MEMOIZATION**********************************/
+/*
+int minCostPath_MEM(int **input,int m,int n,int i, int j, int **output)
+{
+    //base cases
+    if(i==m-1 && j==n-1)
+        return input[i][j];
+    if(i>=m || j>=n)
+        return INT_MAX;
+    //checking if ans already exixt
+    if(output[i][j]!=-1)
+        return output[i][j];
+    //recursive calls
+    int x = minCostPath_MEM(input,m,n,i,j+1,output);//right
+    int y = minCostPath_MEM(input,m,n,i+1,j+1,output);//diagnol
+    int z = minCostPath_MEM(input,m,n,i+1,j,output);//down
+    //small calculation
+    int ans = min(x,min(y,z)) + input[i][j];
+    //saving it in output matrix
+    output[i][j]=ans;
+    return ans;
+}
+int minCostPath_MEM(int **input, int m, int n)
+{
+    int **output = new int*[m];
+    for(int i=0;i<m;i++)
+    {
+        output[i] = new int[n];
+        for(int j=0; j<n; j++)
+            output[i][j]=-1;
+    }
+    return minCostPath_MEM(input,m,n,0,0,output);
+}
+                  /******************************DYNAMIC PROGRAMMING***********************
+//here we will fill up a output matrix from last cell to first with help of input matrix 
+
+int minCostPath_DP(int **input, int m, int n)
+{
+    int **output = new int*[m];
+    for(int i=0; i<m; i++)
+    {
+        output[i]=new int[n];
+    }
+    //fill the last cell
+    output[m-1][n-1] = input[m-1][n-1];
+    //fill last row in right to left manner
+    for(int j=n-2; j>=0; j--)
+    {
+        output[m-1][j] = output[m-1][j+1] + input[m-1][j];
+    }
+    //fill last col bottom to top
+    for(int i=n-2; i>=0; i--)
+    {
+        output[i][n-1] = output[i+1][n-1] + input[i][n-1];
+    }
+    //fill remaining cell
+    for(int i=m-2;i>=0;i--)
+    {
+        for(int j=n-2;j>=0;j--)
+            output[i][j] = min(output[i][j+1],min(output[i+1][j+1],output[i+1][j])) + input[i][j];
+    }
+    //return the no. at first cell of output becoz it is the sum of min cost
+    return output[0][0];
+}
+*/
