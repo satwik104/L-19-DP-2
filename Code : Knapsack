@@ -1,0 +1,13 @@
+int knapsack(int *weights, int *values, int n, int maxWeight)
+{
+	//base case
+    if(maxWeight == 0 || n==0)
+        return 0;
+    if(weights[0]>maxWeight)
+        return knapsack(weights+1,values+1,n-1,maxWeight);//cant include
+    //recursive call
+    int x = values[0] + knapsack(weights+1,values+1,n-1,maxWeight-weights[0]);//when included
+    int y = knapsack(weights+1,values+1,n-1,maxWeight);//not included
+    
+    return max(x,y);
+}
