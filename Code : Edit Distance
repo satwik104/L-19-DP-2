@@ -1,0 +1,21 @@
+int editDistance(string s1, string s2) {
+	//base case
+    if(s1.size()==0 || s2.size()==0)
+        return max(s1.size(),s2.size());
+    //recursive calls
+    if(s1[0] == s2[0])
+        return editDistance(s1.substr(1),s2.substr(1));
+    else
+    {
+       //operations
+    //insert
+    int a = editDistance(s1.substr(1),s2);
+    //delete
+    int b = editDistance(s1,s2.substr(1));
+    //replace
+    int c = editDistance(s1.substr(1),s2.substr(1));
+    
+    return min(a,min(b,c)) + 1; 
+    }
+    
+}
